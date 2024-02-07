@@ -6,7 +6,7 @@
 #    By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/22 15:39:03 by tmina-ni          #+#    #+#              #
-#    Updated: 2024/01/22 15:58:16 by tmina-ni         ###   ########.fr        #
+#    Updated: 2024/02/07 11:25:28 by tmina-ni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,11 +62,9 @@ gdb:
 
 clean:
 	rm -f $(OBJ) $(OBJ_BONUS)
-	$(MAKE_NO_PRINT) clean -C $(LIB_PATH)
 
 fclean: clean
 	rm -f $(NAME) $(BONUS_NAME)
-	$(MAKE_NO_PRINT) fclean -C $(LIB_PATH)
 
 re: fclean all
 
