@@ -6,7 +6,7 @@
 #    By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/22 15:39:03 by tmina-ni          #+#    #+#              #
-#    Updated: 2024/02/07 11:25:28 by tmina-ni         ###   ########.fr        #
+#    Updated: 2024/02/15 23:32:40 by tmina-ni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3
 MAKE_NO_PRINT = $(MAKE) --no-print-directory
-
+# -fsanitize=thread
 #================================PATHS=========================================#
 
 HEADER_PATH = ./include
