@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:18:27 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/02/16 00:22:44 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/04/24 16:17:25 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,16 @@ int	main(int argc, char *argv[])
 	philo = malloc(data->num_philos * sizeof(t_philo));
 	if (philo == NULL)
 	{
+		destroy_mutexes(data, 4);
+		free(data->fork_mtx);
 		free(data);
 		return (MALLOC_ERROR);
 	}
 	init_philo_data(philo, data);
 	run_threads(philo);
 	destroy_mutexes(data, 4);
+	free(data->fork_mtx);
+	free(data);
+	free(philo);
 	return (0);
 }
