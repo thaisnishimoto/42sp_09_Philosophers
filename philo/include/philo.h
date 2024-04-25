@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:52:07 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/02/16 00:30:04 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/04/24 17:11:24 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <stdlib.h> //malloc
 #include <unistd.h>
 #include <sys/time.h> //gettimeofday
+#include <limits.h>
 
 //#define BOLD "\e[1m"
 //#define RESET "\e[m"
@@ -34,9 +35,9 @@ typedef enum	s_bool
 typedef struct s_data
 {
 	int	num_philos;
-	unsigned long	time_to_die;
-	unsigned long	time_to_eat;
-	unsigned long	time_to_sleep;
+	int	time_to_die;
+	int	time_to_eat;
+	int	time_to_sleep;
 	int	times_must_eat;
 	pthread_mutex_t	*fork_mtx;
 	pthread_mutex_t	print_mtx;
@@ -63,10 +64,10 @@ int	ft_atoi(const char *nptr);
 int	init_shared_data(int argc, char *argv[], t_data *data);
 void	init_philo_data(t_philo *philo, t_data *data);
 
-unsigned long	get_current_time_ms(void);
-unsigned long	calc_elapsed_usec(unsigned long start_time_ms);
-unsigned long	calc_elapsed_ms(unsigned long start_time_ms);
-void	ft_usleep(unsigned long usec_sleep_time);
+int	get_current_time_ms(void);
+int	calc_elapsed_usec(int start_time_ms);
+int	calc_elapsed_ms(int start_time_ms);
+void	ft_usleep(int usec_sleep_time);
 
 void	*sleeping(t_philo *philo);
 void	*philo_routine(void *arg);
