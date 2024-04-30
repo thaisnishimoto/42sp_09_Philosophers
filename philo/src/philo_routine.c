@@ -6,58 +6,11 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:53:08 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/04/29 17:46:43 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/04/30 11:37:35 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
-
-bool	end_simulation(t_philo *philo)
-{
-	bool	status;
-
-	pthread_mutex_lock(&philo->data->sim_status_mtx);
-	status = philo->data->end_sim;
-	pthread_mutex_unlock(&philo->data->sim_status_mtx);
-	return (status);
-}
-
-void	print_action(t_philo *philo, t_philo_action action)
-{
-	int	timestamp_ms;
-	
-	pthread_mutex_lock(&philo->data->print_mtx);
-	timestamp_ms = calc_elapsed_ms(philo->data->start_time);
-	if (!end_simulation(philo))
-	{
-		if (action == TAKE_FORK)
-			printf("%d %d has taken a fork\n", timestamp_ms, philo->id);
-		else if (action == EAT)
-			printf("%d %d is eating\n", timestamp_ms, philo->id);
-		else if (action == SLEEP)
-			printf("%d %d is sleeping\n", timestamp_ms, philo->id);
-		else if (action == THINK)
-			printf("%d %d is thinking\n", timestamp_ms, philo->id);
-		else if (action == DIE)
-			printf("%d %d died\n", timestamp_ms, philo->id);
-	}
-	pthread_mutex_unlock(&philo->data->print_mtx);
-
-}
-
-void	update_meal_time(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->data->time_ate_mtx);
-	philo->time_last_ate = get_current_time_ms();
-	pthread_mutex_unlock(&philo->data->time_ate_mtx);
-}
-
-void	update_philos_full(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->data->philos_full_mtx);
-	philo->data->philos_full++;
-	pthread_mutex_unlock(&philo->data->philos_full_mtx);
-}
 
 static void	take_forks(t_philo *philo)
 {
@@ -109,7 +62,7 @@ void	*philo_routine(void* arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	while (!end_simulation(philo))
+	while (!stop_simulation(philo, 0))
 	{
 		eating(philo);
 		sleeping(philo);
