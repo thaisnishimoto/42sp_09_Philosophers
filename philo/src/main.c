@@ -6,13 +6,13 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:18:27 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/04/24 16:17:25 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/04/29 23:50:05 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-void	run_threads(t_philo *philo)
+void	run_simulation(t_philo *philo)
 {
 	int	i;
 	pthread_t	*philo_threads;
@@ -32,7 +32,7 @@ void	run_threads(t_philo *philo)
 		pthread_create(&philo_threads[i], NULL, philo_routine, (void *)&philo[i]);
 		i++;
 	}
-	pthread_create(&monitoring, NULL, monitor_philos_full, (void *)philo);
+	pthread_create(&monitoring, NULL, monitor_philos_state, (void *)philo);
 	i = 0;
 	while (i < philo->data->num_philos)
 	{
@@ -44,28 +44,29 @@ void	run_threads(t_philo *philo)
 
 int	main(int argc, char *argv[])
 {
-	t_data	*data;
+	t_data	data;
 	t_philo	*philo;
+	int	return_value;
 
-	if (check_arguments(argc, argv) != 0)
+	if (!valid_arguments(argc, argv))
 		return (INPUT_ERROR);
-	data = malloc(sizeof(t_data));
-	if (data == NULL)
-		return (MALLOC_ERROR);
-	init_shared_data(argc, argv, data);
-	philo = malloc(data->num_philos * sizeof(t_philo));
-	if (philo == NULL)
+//	data = malloc(sizeof(t_data));
+//	if (data == NULL)
+//		return (MALLOC_ERROR);
+	return_value = init_shared_data(argc, argv, &data);
+	if (return_value != 0)
+		return (return_value);
+	philo = malloc(data.num_philos * sizeof(t_philo));
+	if (philo)
 	{
-		destroy_mutexes(data, 4);
-		free(data->fork_mtx);
-		free(data);
-		return (MALLOC_ERROR);
+		init_philo_data(philo, &data);
+		run_simulation(philo);
+		free(philo);
 	}
-	init_philo_data(philo, data);
-	run_threads(philo);
-	destroy_mutexes(data, 4);
-	free(data->fork_mtx);
-	free(data);
-	free(philo);
-	return (0);
+	else
+		return_value = MALLOC_ERROR;
+	destroy_mutexes(&data, 4);
+	free(data.fork_mtx);
+//	free(data);
+	return (return_value);
 }
