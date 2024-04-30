@@ -6,7 +6,7 @@
 #    By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/22 15:39:03 by tmina-ni          #+#    #+#              #
-#    Updated: 2024/04/29 17:01:15 by tmina-ni         ###   ########.fr        #
+#    Updated: 2024/04/30 15:05:46 by tmina-ni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,9 +14,10 @@
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3
-RACE_FLAGS = -o2 -fsanitize=thread -pthread
+LIBS = -pthread
+RACE_FLAGS = -o2 -fsanitize=thread
 MAKE_NO_PRINT = $(MAKE) --no-print-directory
-# -fsanitize=thread
+
 #================================PATHS=========================================#
 
 HEADER_PATH = ./include
@@ -34,13 +35,13 @@ HEADER = $(HEADER_PATH)/philo.h
 all: $(NAME)
 
 $(NAME): $(OBJ) $(HEADER)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT_FLAG)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBS)
 
 $(SRC_PATH)/%.o: $(SRC_PATH)/%.c $(HEADER)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 race:
-	$(CC) $(CFLAGS) $(RACE_FLAGS) -o $(NAME) $(OBJ) $(LIBFT_FLAG)
+	$(CC) $(CFLAGS) $(RACE_FLAGS) -o $(NAME) $(OBJ) $(LIBS)
 
 #================================LEAKS=========================================#
 
