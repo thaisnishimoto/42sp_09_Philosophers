@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:52:07 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/04/30 11:52:36 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/04/30 14:58:53 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,7 @@ void	update_meal_time(t_philo *philo);
 void	update_philos_full(t_philo *philo);
 void	print_action(t_philo *philo, t_philo_action action);
 bool	stop_simulation(t_philo *philo, int stop);
-void	*monitor_philos_status(void *arg);
-bool	all_philos_full(t_philo *philo);
-bool	philo_starved(t_philo *philo);
+void	*monitor_philos_state(void *arg);
 
 //Finish functions
 void	destroy_mutexes(t_data *data, int stage);
