@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 12:32:35 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/02/16 00:30:07 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/04/29 23:51:56 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,12 @@ void	destroy_mutexes(t_data *data, int stage)
 		if (stage >= 3)
 		{
 			pthread_mutex_destroy(&data->time_ate_mtx);
-			if (stage == 4)
-			pthread_mutex_destroy(&data->philos_full_mtx);
+			if (stage >= 4)
+			{
+				pthread_mutex_destroy(&data->philos_full_mtx);
+				if (stage == 5)
+					pthread_mutex_destroy(&data->sim_status_mtx);
+			}
 		}
 	}
 	i = 0;
@@ -31,7 +35,7 @@ void	destroy_mutexes(t_data *data, int stage)
 		pthread_mutex_destroy(&data->fork_mtx[i++]);
 }
 
-int	init_mutexes(t_data *data)
+static int	init_mutexes(t_data *data)
 {
 	int	i;
 
@@ -42,30 +46,25 @@ int	init_mutexes(t_data *data)
 		{
 			while (--i >= 0)	
 				pthread_mutex_destroy(&data->fork_mtx[i]);
-			return (1);
+			return (-1);
 		}
 		i++;
 	}
 	if (pthread_mutex_init(&data->print_mtx, NULL) != 0)
-	{
-		destroy_mutexes(data, 1);
 		return (1);
-	}
 	if (pthread_mutex_init(&data->time_ate_mtx, NULL) != 0)
-	{
-		destroy_mutexes(data, 2);
-		return (1);
-	}
+		return (2);
 	if (pthread_mutex_init(&data->philos_full_mtx, NULL) != 0)
-	{
-		destroy_mutexes(data, 3);
-		return (1);
-	}
+		return (3);
+	if (pthread_mutex_init(&data->sim_status_mtx, NULL) != 0)
+		return (4);
 	return (0);
 }
 
 int	init_shared_data(int argc, char *argv[], t_data *data)
 {
+	int	stage;
+
 	data->num_philos = ft_atoi(argv[1]);
 	data->time_to_die = ft_atoi(argv[2]);
 	data->time_to_eat = ft_atoi(argv[3]);
@@ -74,15 +73,19 @@ int	init_shared_data(int argc, char *argv[], t_data *data)
 		data->times_must_eat = ft_atoi(argv[5]);
 	else
 		data->times_must_eat = -1;
+	data->philos_full = 0;
 	data->fork_mtx = malloc(data->num_philos * sizeof(pthread_mutex_t));
 	if (data->fork_mtx == NULL)
-		return (1);
-	if (init_mutexes(data) != 0)
+		return (MALLOC_ERROR);
+	stage = init_mutexes(data);
+	if (stage != 0)
 	{
+		if (stage >= 1)
+			destroy_mutexes(data, stage);
 		free(data->fork_mtx);
-		return (1);
+		return (MTX_ERROR);
 	}
-	data->end_sim = FALSE;
+	data->end_sim = false;
 	return (0);
 }
 
