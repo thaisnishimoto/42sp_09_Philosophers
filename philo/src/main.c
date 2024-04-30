@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:18:27 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/04/29 23:50:05 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/04/30 15:44:31 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,27 +18,20 @@ void	run_simulation(t_philo *philo)
 	pthread_t	*philo_threads;
 	pthread_t	monitoring;
 
+	if (philo->data->times_must_eat == 0)
+		return ;
 	philo->data->start_time = get_current_time_ms();
-	i = 0;
-	while (i < philo->data->num_philos)
-	{
+	i = -1;
+	while (++i < philo->data->num_philos)
 		philo[i].time_last_ate = philo->data->start_time;
-		i++;
-	}
 	philo_threads = malloc(philo->data->num_philos * sizeof(pthread_t));
-	i = 0;
-	while (i < philo->data->num_philos)
-	{
+	i = -1;
+	while (++i < philo->data->num_philos)
 		pthread_create(&philo_threads[i], NULL, philo_routine, (void *)&philo[i]);
-		i++;
-	}
 	pthread_create(&monitoring, NULL, monitor_philos_state, (void *)philo);
-	i = 0;
-	while (i < philo->data->num_philos)
-	{
+	i = -1;
+	while (++i < philo->data->num_philos)
 		pthread_join(philo_threads[i], NULL);
-		i++;
-	}
 	pthread_join(monitoring, NULL);
 }
 
