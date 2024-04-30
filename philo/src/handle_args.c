@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 17:31:08 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/04/24 17:22:23 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/04/28 23:45:39 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	ft_atoi(const char *nptr)
 	return (sign * num);
 }
 
-int	check_arguments(int argc, char *argv[])
+bool	valid_arguments(int argc, char *argv[])
 {
 	int	i;
 
@@ -47,7 +47,7 @@ int	check_arguments(int argc, char *argv[])
 		printf("Usage: ./philo num_of_philosophers ");
 		printf("time_to_die time_to_eat time_to_sleep ");
 		printf("[times_each_must_eat]\n");
-		return(INPUT_ERROR);
+		return (false);
 	}
 	i = 1;
 	while (i < argc)
@@ -56,9 +56,9 @@ int	check_arguments(int argc, char *argv[])
 		{
 			printf("Error: argv[%d] must be a number ", i);
 			printf("ranging from 0 to INT_MAX\n");
-			return(INPUT_ERROR);
+			return (false);
 		}
 		i++;
 	}
-	return (0);
+	return (true);
 }
