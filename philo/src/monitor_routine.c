@@ -6,20 +6,22 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:53:08 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/04/30 18:22:38 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/03 23:44:56 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-int	last_meal_time(t_philo *philo)
+int	time_hungry(t_philo *philo)
 {
-	int	time_last_ate;
+	int	current_timestamp;
+	int	time_hungry;
 
 	pthread_mutex_lock(&philo->data->time_ate_mtx);
-	time_last_ate = calc_elapsed_ms(philo->time_last_ate);
+	current_timestamp = calc_elapsed_ms(philo->data_>start_time);
+	time_hungry = current_timestamp - philo->time_last_ate;
 	pthread_mutex_unlock(&philo->data->time_ate_mtx);
-	return (time_last_ate);
+	return (time_hungry);
 }
 
 static bool	philo_starved(t_philo *philo)
@@ -31,7 +33,7 @@ static bool	philo_starved(t_philo *philo)
 	i = 0;
 	while (i < philo->data->num_philos && !stop_simulation(philo, 0))
 	{
-		if (last_meal_time(&philo[i]) > philo->data->time_to_die)
+		if (time_hungry(&philo[i]) > philo->data->time_to_die)
 		{
 			print_action(&philo[i], DIE);
 			starved_state = true;
@@ -54,23 +56,23 @@ static bool	all_philos_full(t_philo *philo)
 	return (all_full);
 }
 
-//static bool	all_philos_full(t_philo *philo)
-//{
-//	bool	full_state;
-//	int	i;
-//
-//	full_state = false;
-//	i = 0;
-//	while (i < philo->data->num_philos && !stop_simulation(philo, 0))
-//	{
-//		if (philo[i].times_eaten >= philo->data->times_must_eat)
-//			full_state = true;
-//		else
-//			full_state = false;
-//		i++;
-//	}
-//	return (full_state);
-//}
+static bool	all_philos_full(t_philo *philo)
+{
+	bool	full_state;
+	int	i;
+
+	full_state = false;
+	i = 0;
+	while (i < philo->data->num_philos && !stop_simulation(philo, 0))
+	{
+		if (philo[i].times_eaten >= philo->data->times_must_eat)
+			full_state = true;
+		else
+			full_state = false;
+		i++;
+	}
+	return (full_state);
+}
 
 void	*monitor_philos_state(void* arg)
 {

@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:52:07 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/04/30 14:58:53 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/03 19:35:00 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct s_data
 	int	time_to_eat;
 	int	time_to_sleep;
 	int	times_must_eat;
-	int	philos_full;
+//	int	philos_full;
 	pthread_mutex_t	*fork_mtx;
 	pthread_mutex_t	print_mtx;
 	pthread_mutex_t	time_ate_mtx;
@@ -56,6 +56,7 @@ typedef struct s_philo
 	int	id;
 	unsigned long	time_last_ate;
 	int	times_eaten;
+	bool	full;
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*left_fork;
 	t_data	*data;
@@ -79,7 +80,7 @@ void	ft_usleep(int usec_sleep_time);
 void	*philo_routine(void *arg);
 void	update_meal_time(t_philo *philo);
 void	update_philos_full(t_philo *philo);
-void	print_action(t_philo *philo, t_philo_action action);
+int		print_action(t_philo *philo, t_philo_action action);
 bool	stop_simulation(t_philo *philo, int stop);
 void	*monitor_philos_state(void *arg);
 

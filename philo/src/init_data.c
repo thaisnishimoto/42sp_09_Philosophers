@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 12:32:35 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/04/29 23:51:56 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/03 19:53:40 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ void	init_philo_data(t_philo *philo, t_data *data)
 	{
 		philo[i].id = i + 1;
 		philo[i].times_eaten = 0;
+		philo[i].full = false;
 		philo[i].right_fork = &data->fork_mtx[i];
 		philo[i].left_fork = &data->fork_mtx[(i + 1) % data->num_philos];
 		philo[i].data = data;

@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:53:08 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/04/30 11:37:35 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/03 19:33:52 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,14 @@ static void	take_forks(t_philo *philo)
 static void	*eating(t_philo *philo)
 {
 	take_forks(philo);
-	print_action(philo, EAT);
+	pthread_mutex_lock(&philo->data->time_ate_mtx);
+	philo->time_last_ate = print_action(philo, EAT);
+	pthread_mutex_unlock(&philo->data->time_ate_mtx);
+	//update_meal_time(philo);
+	ft_usleep(philo->data->time_to_eat * 1000);
 	philo->times_eaten++;
 	if (philo->times_eaten == philo->data->times_must_eat)
-		update_philos_full(philo);
-	update_meal_time(philo);
-	ft_usleep(philo->data->time_to_eat * 1000);
+		set_philo_full(philo);
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
 	return (NULL);
@@ -54,6 +56,7 @@ static void	*sleeping(t_philo *philo)
 static void	*thinking(t_philo *philo)
 {
 	print_action(philo, THINK);
+	usleep(1000);
 	return (NULL);
 }
 
