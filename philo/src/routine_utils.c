@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:53:08 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/03 19:35:31 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/04 00:32:01 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ bool	stop_simulation(t_philo *philo, int stop)
 }
 
 int	print_action(t_philo *philo, t_philo_action action)
-
+{
 	int	timestamp_ms;
 	
 	pthread_mutex_lock(&philo->data->print_mtx);
@@ -46,13 +46,6 @@ int	print_action(t_philo *philo, t_philo_action action)
 	pthread_mutex_unlock(&philo->data->print_mtx);
 	return (timestamp_ms);
 }
-
-//void	update_meal_time(t_philo *philo)
-//{
-//	pthread_mutex_lock(&philo->data->time_ate_mtx);
-//	philo->time_last_ate = get_current_time_ms();
-//	pthread_mutex_unlock(&philo->data->time_ate_mtx);
-//}
 
 void	set_philo_full(t_philo *philo)
 {

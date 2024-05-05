@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:53:08 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/03 23:44:56 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/04 00:52:21 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	time_hungry(t_philo *philo)
 	int	time_hungry;
 
 	pthread_mutex_lock(&philo->data->time_ate_mtx);
-	current_timestamp = calc_elapsed_ms(philo->data_>start_time);
+	current_timestamp = calc_elapsed_ms(philo->data->start_time);
 	time_hungry = current_timestamp - philo->time_last_ate;
 	pthread_mutex_unlock(&philo->data->time_ate_mtx);
 	return (time_hungry);
@@ -44,33 +44,35 @@ static bool	philo_starved(t_philo *philo)
 	return (starved_state);
 }
 
-static bool	all_philos_full(t_philo *philo)
+static bool	philo_full(t_philo *philo)
 {
-	bool	all_full;
+	bool	is_full;
 
-	all_full = false;
+	is_full = false;
 	pthread_mutex_lock(&philo->data->philos_full_mtx);
-	if (philo->data->philos_full == philo->data->num_philos)
-		all_full = true;
+	if (philo->full)
+		is_full = true;
 	pthread_mutex_unlock(&philo->data->philos_full_mtx);
-	return (all_full);
+	return (is_full);
 }
 
 static bool	all_philos_full(t_philo *philo)
 {
 	bool	full_state;
 	int	i;
+	int	count_philos_full;
 
 	full_state = false;
 	i = 0;
+	count_philos_full = 0;
 	while (i < philo->data->num_philos && !stop_simulation(philo, 0))
 	{
-		if (philo[i].times_eaten >= philo->data->times_must_eat)
-			full_state = true;
-		else
-			full_state = false;
+		if (philo_full(&philo[i]))
+			count_philos_full++;
 		i++;
 	}
+	if (count_philos_full == philo->data->num_philos)
+		full_state = true;
 	return (full_state);
 }
 
@@ -85,7 +87,7 @@ void	*monitor_philos_state(void* arg)
 			stop_simulation(philo, 1);
 		if (philo->data->times_must_eat >= 1 && all_philos_full(philo))
 			stop_simulation(philo, 1);
-//		usleep(1000);
+		usleep(500);
 	}
 	return (NULL);
 }

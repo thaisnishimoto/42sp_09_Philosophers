@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 12:32:35 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/03 19:53:40 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/04 00:26:28 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ int	init_shared_data(int argc, char *argv[], t_data *data)
 		data->times_must_eat = ft_atoi(argv[5]);
 	else
 		data->times_must_eat = -1;
-	data->philos_full = 0;
 	data->fork_mtx = malloc(data->num_philos * sizeof(pthread_mutex_t));
 	if (data->fork_mtx == NULL)
 		return (MALLOC_ERROR);
