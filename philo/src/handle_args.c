@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 17:31:08 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/04/28 23:45:39 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/06 17:28:13 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,7 @@ bool	valid_arguments(int argc, char *argv[])
 	{
 		if (ft_atoi(argv[i]) <= 0 || ft_atoi(argv[i]) > INT_MAX)
 		{
-			printf("Error: argv[%d] must be a number ", i);
-			printf("ranging from 0 to INT_MAX\n");
+			printf("Error: argv[%d] must be a positive integer\n", i);
 			return (false);
 		}
 		i++;

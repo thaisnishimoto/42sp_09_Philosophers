@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:53:08 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/04 00:52:21 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/06 12:00:05 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	*monitor_philos_state(void* arg)
 	{
 		if (philo_starved(philo))
 			stop_simulation(philo, 1);
-		if (philo->data->times_must_eat >= 1 && all_philos_full(philo))
+		if (philo->data->times_must_eat > 0 && all_philos_full(philo))
 			stop_simulation(philo, 1);
 		usleep(500);
 	}
