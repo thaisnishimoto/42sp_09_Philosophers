@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:18:27 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/06 16:50:00 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/07 00:12:22 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	main(int argc, char *argv[])
 {
 	t_data	data;
 	t_philo	*philo;
-	int	return_value;
+	int		return_value;
 
 	if (!valid_arguments(argc, argv))
 		return (INPUT_ERROR);

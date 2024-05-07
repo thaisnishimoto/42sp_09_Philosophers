@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 16:56:19 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/06 16:45:13 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/07 00:21:03 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 int	get_current_time_ms(void)
 {
 	struct timeval	tv;
-	int	time_ms;
+	int				time_ms;
 
 	gettimeofday(&tv, NULL);
-	time_ms = ((tv.tv_sec * 1000) + (tv.tv_usec/ 1000));
+	time_ms = ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 	return (time_ms);
 }
 

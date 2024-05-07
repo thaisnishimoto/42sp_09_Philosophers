@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:53:08 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/06 23:53:31 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/07 00:15:55 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@ void	take_forks(t_philo *philo)
 		pthread_mutex_lock(philo->right_fork);
 		print_action(philo, TAKE_FORK);
 	}
-	else	
+	else
 	{
-	      	pthread_mutex_lock(philo->right_fork);
+		pthread_mutex_lock(philo->right_fork);
 		print_action(philo, TAKE_FORK);
-	      	pthread_mutex_lock(philo->left_fork);
+		pthread_mutex_lock(philo->left_fork);
 		print_action(philo, TAKE_FORK);
 	}
 }

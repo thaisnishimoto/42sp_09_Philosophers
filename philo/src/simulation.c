@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:18:27 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/06 17:26:57 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/07 00:20:08 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	run_simulation(t_philo *philo)
 {
-	int	i;
-	pthread_t	*philo_threads;
+	int			i;
+	pthread_t	*philo_thd;
 	pthread_t	monitoring;
 
 	if (philo->data->times_must_eat == 0)
@@ -24,21 +24,21 @@ void	run_simulation(t_philo *philo)
 	i = -1;
 	while (++i < philo->data->num_philos)
 		philo[i].time_last_ate = calc_elapsed_ms(philo->data->start_time);
-	philo_threads = malloc(philo->data->num_philos * sizeof(pthread_t));
-	if (philo_threads == NULL)
+	philo_thd = malloc(philo->data->num_philos * sizeof(pthread_t));
+	if (philo_thd == NULL)
 		return ;
 	i = -1;
 	while (++i < philo->data->num_philos)
-		pthread_create(&philo_threads[i], NULL, philo_routine, (void *)&philo[i]);
+		pthread_create(&philo_thd[i], NULL, philo_routine, (void *)&philo[i]);
 	pthread_create(&monitoring, NULL, monitor_philos_state, (void *)philo);
 	i = -1;
 	while (++i < philo->data->num_philos)
-		pthread_join(philo_threads[i], NULL);
+		pthread_join(philo_thd[i], NULL);
 	pthread_join(monitoring, NULL);
-	free(philo_threads);
+	free(philo_thd);
 }
 
-void	*philo_routine(void* arg)
+void	*philo_routine(void *arg)
 {
 	t_philo	*philo;
 
@@ -60,7 +60,7 @@ void	*philo_routine(void* arg)
 	return (NULL);
 }
 
-void	*monitor_philos_state(void* arg)
+void	*monitor_philos_state(void *arg)
 {
 	t_philo	*philo;
 
@@ -79,7 +79,7 @@ void	*monitor_philos_state(void* arg)
 int	print_action(t_philo *philo, t_philo_action action)
 {
 	int	timestamp_ms;
-	
+
 	pthread_mutex_lock(&philo->data->print_mtx);
 	timestamp_ms = calc_elapsed_ms(philo->data->start_time);
 	if (!stop_simulation(philo, 0))

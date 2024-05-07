@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 12:32:35 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/06 17:24:15 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/07 00:14:34 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	init_mutexes(t_data *data)
 	{
 		if (pthread_mutex_init(&data->fork_mtx[i], NULL) != 0)
 		{
-			while (--i >= 0)	
+			while (--i >= 0)
 				pthread_mutex_destroy(&data->fork_mtx[i]);
 			return (-1);
 		}
@@ -41,7 +41,7 @@ int	init_mutexes(t_data *data)
 void	destroy_mutexes(t_data *data, int stage)
 {
 	int	i;	
-	
+
 	if (stage >= 2)
 	{
 		pthread_mutex_destroy(&data->print_mtx);
