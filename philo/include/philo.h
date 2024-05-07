@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:52:07 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/04 00:29:04 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/06 17:26:18 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ typedef struct s_data
 typedef struct s_philo
 {
 	int	id;
-	unsigned long	time_last_ate;
+	int	time_last_ate;
 	int	times_eaten;
 	bool	full;
 	pthread_mutex_t	*right_fork;
@@ -69,20 +69,32 @@ int	ft_atoi(const char *nptr);
 int	init_shared_data(int argc, char *argv[], t_data *data);
 void	init_philo_data(t_philo *philo, t_data *data);
 
+//Mutex functions
+int	init_mutexes(t_data *data);
+void	destroy_mutexes(t_data *data, int stage);
+
 //Time functions
 int	get_current_time_ms(void);
 int	calc_elapsed_usec(int start_time_ms);
 int	calc_elapsed_ms(int start_time_ms);
 void	ft_usleep(int usec_sleep_time);
 
-//Routine functions
+//Simulation functions
+void	run_simulation(t_philo *philo);
 void	*philo_routine(void *arg);
-void	set_philo_full(t_philo *philo);
+void	*monitor_philos_state(void *arg);
 int		print_action(t_philo *philo, t_philo_action action);
 bool	stop_simulation(t_philo *philo, int stop);
-void	*monitor_philos_state(void *arg);
 
-//Finish functions
-void	destroy_mutexes(t_data *data, int stage);
+//Philo routine
+void	*eating(t_philo *philo);
+void	*sleeping(t_philo *philo);
+void	*thinking(t_philo *philo);
+void	take_forks(t_philo *philo);
+void	set_philo_full(t_philo *philo);
+
+//Monitor routine
+bool	all_philos_full(t_philo *philo);
+bool	philo_starved(t_philo *philo);
 
 #endif
