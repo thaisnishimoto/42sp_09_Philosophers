@@ -6,23 +6,23 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:52:07 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/08 23:04:41 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/09 11:04:16 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_BONUS_H
 # define PHILO_BONUS_H
 
-# include <pthread.h>
 # include <stdio.h>
 # include <stdlib.h> //malloc
-# include <unistd.h>
+# include <unistd.h> //fork
 # include <sys/time.h> //gettimeofday
 # include <limits.h>
 # include <stdbool.h>
 # include <fcntl.h>
 # include <sys/stat.h>
 # include <semaphore.h>
+# include <sys/wait.h> //waitpid
 
 # define SUCESS 0
 # define INPUT_ERROR 1
