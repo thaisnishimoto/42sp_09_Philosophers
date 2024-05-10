@@ -6,13 +6,14 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:52:07 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/09 11:04:16 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/10 01:21:20 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_BONUS_H
 # define PHILO_BONUS_H
 
+# include <pthread.h>
 # include <stdio.h>
 # include <stdlib.h> //malloc
 # include <unistd.h> //fork
@@ -22,12 +23,15 @@
 # include <fcntl.h>
 # include <sys/stat.h>
 # include <semaphore.h>
+# include <sys/types.h>
 # include <sys/wait.h> //waitpid
+# include <string.h> //memset
 
-# define SUCESS 0
+# define SUCCESS 0
 # define INPUT_ERROR 1
 # define MALLOC_ERROR 2
-# define SEM_ERROR 2
+# define SEM_ERROR 3
+# define FORK_ERROR 4
 
 typedef enum e_action
 {
@@ -45,10 +49,11 @@ typedef struct s_data
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				times_must_eat;
-	pid_t	philo_pid;
+	pid_t	*philo_pid;
 	sem_t	*sem_fork;
 	sem_t	*sem_table;
 	sem_t	*sem_print;
+	sem_t	*sem_death;
 	int				start_time;
 }	t_data;
 
@@ -57,6 +62,8 @@ typedef struct s_philo
 	int				id;
 	int				time_last_ate;
 	int				times_eaten;
+	bool	alive;
+	bool	full;
 	t_data			*data;
 }	t_philo;
 
@@ -64,9 +71,8 @@ typedef struct s_philo
 bool	valid_arguments(int argc, char *argv[]);
 int		ft_atoi(const char *nptr);
 
-//Init functions
-int		init_shared_data(int argc, char *argv[], t_data *data);
-void	init_philo_data(t_philo *philo, t_data *data);
+//Init function
+void	init_data(int argc, char *argv[], t_data *data);
 
 //Time functions
 int		get_current_time_ms(void);
@@ -74,22 +80,20 @@ int		calc_elapsed_usec(int start_time_ms);
 int		calc_elapsed_ms(int start_time_ms);
 void	ft_usleep(int usec_sleep_time);
 
-//Simulation functions
-void	run_simulation(t_philo *philo);
-void	*philo_routine(void *arg);
-void	*monitor_philos_state(void *arg);
-int		print_action(t_philo *philo, t_philo_action action);
-bool	stop_simulation(t_philo *philo, int stop);
-
 //Philo routine
-void	*eating(t_philo *philo);
-void	*sleeping(t_philo *philo);
-void	*thinking(t_philo *philo);
-void	take_forks(t_philo *philo);
-void	set_philo_full(t_philo *philo);
+int		philo_routine(t_data *data, int i);
+bool	philo_alive(t_philo *philo);
 
-//Monitor routine
-bool	all_philos_full(t_philo *philo);
-bool	philo_starved(t_philo *philo);
+//Philo actions
+void	eating(t_philo *philo);
+void	sleeping(t_philo *philo);
+void	thinking(t_philo *philo);
+int		print_action(t_philo *philo, t_philo_action action);
+
+//Finish functions
+void	*monitor_death(void *arg);
+void	wait_free_philos(t_data *data);
+void	close_semaphores(t_data *data);
+void	unlink_semaphores(void);
 
 #endif
