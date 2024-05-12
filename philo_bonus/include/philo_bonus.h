@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:52:07 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/10 01:21:20 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/11 23:01:26 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@
 # define MALLOC_ERROR 2
 # define SEM_ERROR 3
 # define FORK_ERROR 4
+# define PHILO_FULL 5
+# define PHILO_DEAD 6
 
 typedef enum e_action
 {
@@ -64,6 +66,9 @@ typedef struct s_philo
 	int				times_eaten;
 	bool	alive;
 	bool	full;
+	pthread_t	self_monitor;
+	char	*sem_state_name;
+	sem_t	*sem_state;
 	t_data			*data;
 }	t_philo;
 
@@ -82,7 +87,7 @@ void	ft_usleep(int usec_sleep_time);
 
 //Philo routine
 int		philo_routine(t_data *data, int i);
-bool	philo_alive(t_philo *philo);
+bool	philo_is_alive(t_philo *philo, int died);
 
 //Philo actions
 void	eating(t_philo *philo);
@@ -90,10 +95,15 @@ void	sleeping(t_philo *philo);
 void	thinking(t_philo *philo);
 int		print_action(t_philo *philo, t_philo_action action);
 
+//Utils
+char	*ft_utoa(unsigned int n);
+char	*ft_strjoin(char const *s1, char const *s2);
+
 //Finish functions
 void	*monitor_death(void *arg);
+void	*kill_all_philos(void *arg);
 void	wait_free_philos(t_data *data);
-void	close_semaphores(t_data *data);
-void	unlink_semaphores(void);
+void	close_shared_semaphores(t_data *data);
+void	unlink_shared_semaphores(void);
 
 #endif

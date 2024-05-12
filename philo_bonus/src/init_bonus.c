@@ -6,13 +6,13 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 12:32:35 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/10 16:01:11 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/11 22:59:24 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo_bonus.h"
 
-static	bool	open_semaphores(t_data *data)
+static	bool	open_shared_semaphores(t_data *data)
 {
 	data->sem_fork = sem_open("/fork", O_CREAT, 0660, data->num_philos);
 	if (data->sem_fork == SEM_FAILED)
@@ -54,11 +54,11 @@ void	init_data(int argc, char *argv[], t_data *data)
 	data->philo_pid = malloc(data->num_philos * sizeof(int));
 	if (data->philo_pid == NULL)
 		exit(MALLOC_ERROR);
-	unlink_semaphores();
-	if (!open_semaphores(data))
+	unlink_shared_semaphores();
+	if (!open_shared_semaphores(data))
 	{
 		free(data->philo_pid);
-		unlink_semaphores();
+		unlink_shared_semaphores();
 		exit(SEM_ERROR);
 	}
 	data->start_time = get_current_time_ms();

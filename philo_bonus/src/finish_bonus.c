@@ -6,22 +6,38 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:18:27 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/10 17:49:30 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/11 22:59:46 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo_bonus.h"
 
-void	*monitor_death(void *arg)
+//void	*monitor_philos_death(void *arg)
+//{
+//	t_data	*data;
+//	int	i;
+//
+//	data = (t_data *)arg;
+//	sem_wait(data->sem_death);
+//	i = 0;
+//	while (i < data->num_philos)
+//	{
+//		kill(data->philo_pid[i], SIGKILL);
+//		i++;
+//	}
+//	return (NULL);
+//}
+
+void	*kill_all_philos(void *arg)
 {
 	t_data	*data;
 	int	i;
 
 	data = (t_data *)arg;
-	sem_wait(data->sem_death);
 	i = 0;
 	while (i < data->num_philos)
 	{
+		printf("kill philo\n");
 		kill(data->philo_pid[i], SIGKILL);
 		i++;
 	}
@@ -30,26 +46,23 @@ void	*monitor_death(void *arg)
 
 void	wait_free_philos(t_data *data)
 {
-	int	i;
 	int	status;
 //	int	philos_full;
 
-	i = 0;
 //	philos_full = 0;
-	while (i < data->num_philos)
+	while (waitpid(-1, &status, 0) != -1)
 	{
-		waitpid(0, &status, 0);
-//		if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
+		if (WIFEXITED(status) && WEXITSTATUS(status) == PHILO_DEAD)
+			kill_all_philos(data);
 //			philos_full++;
-		i++;
 	}
-	close_semaphores(data);
-	unlink_semaphores();
+	close_shared_semaphores(data);
+	unlink_shared_semaphores();
 	free(data->philo_pid);
 //	if (data->times_must_eat > 0 &&)
 }
 
-void	close_semaphores(t_data *data)
+void	close_shared_semaphores(t_data *data)
 {
 	sem_close(data->sem_fork);
 	sem_close(data->sem_table);
@@ -57,7 +70,7 @@ void	close_semaphores(t_data *data)
 	sem_close(data->sem_death);
 }
 
-void	unlink_semaphores(void)
+void	unlink_shared_semaphores(void)
 {
 	sem_unlink("/fork");
 	sem_unlink("/table");

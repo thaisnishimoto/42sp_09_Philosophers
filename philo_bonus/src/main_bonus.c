@@ -6,11 +6,21 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:18:27 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/10 15:33:40 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/11 22:59:08 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo_bonus.h"
+
+void	*monitor_death(void *arg)
+{
+	t_data	*data;
+
+	data = (t_data *)arg;
+	sem_wait(data->sem_death);
+	kill_all_philos(data);
+	return (NULL);
+}
 
 static pid_t	ft_fork(t_data *data)
 {
@@ -19,8 +29,8 @@ static pid_t	ft_fork(t_data *data)
 	pid = fork();
 	if (pid < 0)
 	{
-		close_semaphores(data);
-		unlink_semaphores();
+		close_shared_semaphores(data);
+		unlink_shared_semaphores();
 		free(data->philo_pid);
 		exit(FORK_ERROR);
 	}
@@ -31,7 +41,7 @@ int	main(int argc, char *argv[])
 {
 	t_data	data;
 	int		i;
-//	pthread_t	monitor;
+	pthread_t	monitor;
 
 	if (!valid_arguments(argc, argv))
 		return (INPUT_ERROR);
@@ -44,8 +54,8 @@ int	main(int argc, char *argv[])
 			philo_routine(&data, i);
 		i++;
 	}
-//	pthread_create(&monitor, NULL, &monitor_death, (void *)&data);
-//	pthread_detach(monitor);
+	pthread_create(&monitor, NULL, &monitor_death, (void *)&data);
+	pthread_detach(monitor);
 	wait_free_philos(&data);
 	return (SUCCESS);
 }

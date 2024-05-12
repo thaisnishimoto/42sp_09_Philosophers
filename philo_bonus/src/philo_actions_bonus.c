@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:53:08 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/10 18:31:03 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/11 23:38:42 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void	eating(t_philo *philo)
 {
 	int	action_timestamp;
 
+	if (!philo_is_alive(philo, 0))
+		return ;
 	take_forks(philo);
 	action_timestamp = print_action(philo, EAT);
 	philo->time_last_ate = action_timestamp;
@@ -39,12 +41,16 @@ void	eating(t_philo *philo)
 
 void	sleeping(t_philo *philo)
 {
+	if (!philo_is_alive(philo, 0))
+		return ;
 	print_action(philo, SLEEP);
 	ft_usleep(philo->data->time_to_sleep * 1000);
 }
 
 void	thinking(t_philo *philo)
 {
+	if (!philo_is_alive(philo, 0))
+		return ;
 	print_action(philo, THINK);
 	usleep(500);
 }
@@ -54,7 +60,7 @@ int	print_action(t_philo *philo, t_philo_action action)
 	int	timestamp_ms;
 
 	timestamp_ms = 0; 
-	if (philo_alive(philo))
+	if (philo_is_alive(philo, 0))
 	{
 		sem_wait(philo->data->sem_print);
 		timestamp_ms = calc_elapsed_ms(philo->data->start_time);
