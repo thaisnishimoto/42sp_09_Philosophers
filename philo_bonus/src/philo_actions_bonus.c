@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:53:08 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/12 22:56:47 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/13 13:14:07 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	eating(t_philo *philo)
 	sem_post(philo->sem_state);
 	philo->times_eaten++;
 	if (philo->times_eaten == philo->data->times_must_eat)
-		philo->full = true;
+		sem_post(philo->data->sem_full);
 	ft_usleep(philo->data->time_to_eat * 1000);
 	sem_post(philo->data->sem_fork);
 	sem_post(philo->data->sem_fork);

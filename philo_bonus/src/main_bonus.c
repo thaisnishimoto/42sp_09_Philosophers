@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:18:27 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/12 19:24:06 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/13 12:01:37 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	main(int argc, char *argv[])
 	t_data	data;
 	int		i;
 	pthread_t	monitor_death;
+	pthread_t	monitor_full;
 
 	if (!valid_arguments(argc, argv))
 		return (INPUT_ERROR);
@@ -29,8 +30,10 @@ int	main(int argc, char *argv[])
 			philo_routine(&data, i);
 		i++;
 	}
-	pthread_create(&monitor_death, NULL, &kill_all_philos, (void *)&data);
-	pthread_detach(monitor_death);
+	pthread_create(&monitor_death, NULL, &death_routine, (void *)&data);
+	pthread_create(&monitor_full, NULL, &all_full_routine, (void *)&data);
+	pthread_join(monitor_death, NULL);
+	pthread_join(monitor_full, NULL);
 	wait_finish_philos(&data);
 	return (SUCCESS);
 }

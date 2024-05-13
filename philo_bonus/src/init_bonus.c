@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 12:32:35 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/13 02:15:37 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/13 10:39:15 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,23 @@ static	bool	open_shared_semaphores(t_data *data)
 		sem_close(data->sem_print);
 		return (false);
 	}
-	data->sem_stop_sim = sem_open("/sim", O_CREAT, 0660, 0);
-	if (data->sem_death == SEM_FAILED)
+	data->sem_full = sem_open("/full", O_CREAT, 0660, 0);
+	if (data->sem_full == SEM_FAILED)
 	{
 		sem_close(data->sem_fork);
 		sem_close(data->sem_table);
 		sem_close(data->sem_print);
+		sem_close(data->sem_death);
+		return (false);
+	}
+	data->sem_stop = sem_open("/stop", O_CREAT, 0660, 1);
+	if (data->sem_stop == SEM_FAILED)
+	{
+		sem_close(data->sem_fork);
+		sem_close(data->sem_table);
+		sem_close(data->sem_print);
+		sem_close(data->sem_death);
+		sem_close(data->sem_full);
 		return (false);
 	}
 	return (true);
@@ -69,5 +80,6 @@ void	init_data(int argc, char *argv[], t_data *data)
 		free(data->philo_pid);
 		exit(SEM_ERROR);
 	}
+	data->sim_stop = false;
 	data->start_time = get_current_time_ms();
 }
