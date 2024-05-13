@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 12:32:35 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/11 22:59:24 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/12 00:02:13 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ void	init_data(int argc, char *argv[], t_data *data)
 	unlink_shared_semaphores();
 	if (!open_shared_semaphores(data))
 	{
-		free(data->philo_pid);
 		unlink_shared_semaphores();
+		free(data->philo_pid);
 		exit(SEM_ERROR);
 	}
 	data->start_time = get_current_time_ms();

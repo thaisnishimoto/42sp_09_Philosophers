@@ -6,37 +6,13 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:53:08 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/11 23:38:47 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/12 22:56:22 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo_bonus.h"
 
-void	*self_monitor(void *arg)
-{
-	t_philo	*philo;
-	int	current_timestamp;
-	int	time_hungry;
-
-	philo = (t_philo *)arg;
-	while (philo_is_alive(philo, 0))
-	{
-		current_timestamp = calc_elapsed_ms(philo->data->start_time);
-		time_hungry = current_timestamp - philo->time_last_ate;
- 		if (time_hungry > philo->data->time_to_die)
-		{
-			sem_wait(philo->data->sem_print);
-			printf("%d %d died\n", current_timestamp, philo->id);
-			sem_post(philo->data->sem_print);
-			philo_is_alive(philo, 1);
-			sem_post(philo->data->sem_death);
-		}
-		usleep(500);
-	}
-	return (NULL);
-}
-
-char	*get_unique_sem_name(t_philo *philo)
+static char	*get_unique_sem_name(t_philo *philo)
 {
 	char	*sem_name;
 	char	*id_str;
@@ -52,7 +28,6 @@ static void	init_philo(t_philo *philo, t_data *data, int i)
 	philo->id = i + 1;
 	philo->time_last_ate = calc_elapsed_ms(data->start_time);
 	philo->times_eaten = 0;
-	philo->alive = true;
 	philo->full = false;
 	philo->sem_state_name = get_unique_sem_name(philo);
 	sem_unlink(philo->sem_state_name);
@@ -60,16 +35,30 @@ static void	init_philo(t_philo *philo, t_data *data, int i)
 	philo->data = data;
 }
 
-bool	philo_is_alive(t_philo *philo, int died)
+static void	*self_monitor(void *arg)
 {
-	bool	state;
+	t_philo	*philo;
+	int	current_timestamp;
+	int	time_hungry;
 
-	sem_wait(philo->sem_state);
-	if (died)
-		philo->alive = false;	
-	state = philo->alive;	
-	sem_post(philo->sem_state);
-	return (state);
+	philo = (t_philo *)arg;
+	while (true)
+	{
+		sem_wait(philo->sem_state);
+		current_timestamp = calc_elapsed_ms(philo->data->start_time);
+		time_hungry = current_timestamp - philo->time_last_ate;
+ 		if (time_hungry > philo->data->time_to_die)
+		{
+			sem_wait(philo->data->sem_print);
+			printf("%d %d died\n", current_timestamp, philo->id);
+			sem_post(philo->data->sem_death);
+			usleep(500);
+			sem_post(philo->data->sem_print);
+		}
+		sem_post(philo->sem_state);
+		usleep(500);
+	}
+	return (NULL);
 }
 
 static void	finish_child(t_philo *philo)
@@ -85,7 +74,7 @@ int	philo_routine(t_data *data, int i)
 {
 	t_philo	philo;
 
-	memset(&philo, 0, sizeof(t_philo));
+//	memset(&philo, 0, sizeof(t_philo));
 	init_philo(&philo, data, i);
 	pthread_create(&philo.self_monitor, NULL, self_monitor, (void *)&philo);
 	pthread_detach(philo.self_monitor);
@@ -98,20 +87,13 @@ int	philo_routine(t_data *data, int i)
 //		return (NULL);
 //	}
 	while (true)
-//	while (philo_is_alive(&philo, 0))
 	{
 		eating(&philo);
 		if (data->times_must_eat > 0 && philo.full)
-		{
-			finish_child(&philo);
-			exit(PHILO_FULL);
-		}	
+			break ;
 		sleeping(&philo);
 		thinking(&philo);
 	}
 	finish_child(&philo);
-//	sem_wait(philo.data->sem_print);
-	printf("%d exiting  philo\n", philo.id);
-//	sem_post(philo.data->sem_print);
-	exit(PHILO_DEAD);
+	exit(SUCCESS);
 }
