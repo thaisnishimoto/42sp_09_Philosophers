@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_utils.c                                      :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 23:39:08 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/11 17:00:44 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/12 00:04:28 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,3 +94,19 @@ char	*ft_utoa(unsigned int n)
 	}
 	return (ptr);
 }
+
+pid_t	ft_fork(t_data *data)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid < 0)
+	{
+		close_shared_semaphores(data);
+		unlink_shared_semaphores();
+		free(data->philo_pid);
+		exit(FORK_ERROR);
+	}
+	return (pid);
+}
+
