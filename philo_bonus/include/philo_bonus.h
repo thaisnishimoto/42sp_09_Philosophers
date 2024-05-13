@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:52:07 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/13 01:57:27 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/13 13:45:51 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,14 @@ typedef struct s_data
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				times_must_eat;
-	pid_t	*philo_pid;
-	sem_t	*sem_fork;
-	sem_t	*sem_table;
-	sem_t	*sem_print;
-	sem_t	*sem_death;
-	sem_t	*sem_stop_sim;
+	pid_t			*philo_pid;
+	sem_t			*sem_fork;
+	sem_t			*sem_table;
+	sem_t			*sem_print;
+	sem_t			*sem_death;
+	sem_t			*sem_full;
+	sem_t			*sem_stop;
+	bool			sim_stop;
 	int				start_time;
 }	t_data;
 
@@ -62,10 +64,9 @@ typedef struct s_philo
 	int				id;
 	int				time_last_ate;
 	int				times_eaten;
-	bool	full;
-	pthread_t	self_monitor;
-	char	*sem_state_name;
-	sem_t	*sem_state;
+	pthread_t		self_monitor;
+	char			*sem_state_name;
+	sem_t			*sem_state;
 	t_data			*data;
 }	t_philo;
 
@@ -82,8 +83,12 @@ int		calc_elapsed_usec(int start_time_ms);
 int		calc_elapsed_ms(int start_time_ms);
 void	ft_usleep(int usec_sleep_time);
 
+//Main monitor routines
+void	*death_routine(void *arg);
+void	*all_full_routine(void *arg);
+
 //Philo routine
-int		philo_routine(t_data *data, int i);
+void	philo_routine(t_data *data, int i);
 
 //Philo actions
 void	eating(t_philo *philo);
@@ -97,7 +102,8 @@ char	*ft_utoa(unsigned int n);
 char	*ft_strjoin(char const *s1, char const *s2);
 
 //Finish functions
-void	*kill_all_philos(void *arg);
+bool	simulation_stopped(t_data *data, int stop);
+void	kill_all_philos(t_data *data);
 void	wait_finish_philos(t_data *data);
 void	close_shared_semaphores(t_data *data);
 void	unlink_shared_semaphores(void);

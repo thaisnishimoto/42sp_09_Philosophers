@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 23:39:08 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/13 00:33:40 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/13 13:38:00 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,18 +74,17 @@ char	*ft_utoa(unsigned int n)
 
 	lnb = n;
 	len = 0;
-	if (lnb == 0)
+	if (n == 0)
 		len = 1;
-	while (lnb > 0)
+	while (n > 0)
 	{
-		lnb = lnb / 10;
+		n = n / 10;
 		len++;
 	}
 	ptr = malloc((len + 1) * sizeof(char));
 	if (ptr == NULL)
 		return (NULL);
 	ptr[len--] = '\0';
-	lnb = n;
 	if (lnb == 0)
 		ptr[len] = '0';
 	while (lnb > 0)

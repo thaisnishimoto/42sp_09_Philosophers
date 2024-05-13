@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:53:08 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/13 13:14:07 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/13 13:32:58 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,3 @@ int	print_action(t_philo *philo, t_philo_action action)
 	sem_post(philo->data->sem_print);
 	return (timestamp_ms);
 }
-

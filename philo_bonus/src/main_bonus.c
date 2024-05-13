@@ -6,16 +6,50 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:18:27 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/13 12:01:37 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/13 13:44:00 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo_bonus.h"
 
+void	*death_routine(void *arg)
+{
+	t_data	*data;
+
+	data = (t_data *)arg;
+	sem_wait(data->sem_death);
+	if (simulation_stopped(data, 0))
+		return (NULL);
+	simulation_stopped(data, 1);
+	kill_all_philos(data);
+	sem_post(data->sem_full);
+	return (NULL);
+}
+
+void	*all_full_routine(void *arg)
+{
+	t_data	*data;
+	int		philos_full;
+
+	data = (t_data *)arg;
+	philos_full = 0;
+	while (philos_full < data->num_philos)
+	{
+		sem_wait(data->sem_full);
+		if (simulation_stopped(data, 0))
+			return (NULL);
+		philos_full++;
+	}
+	simulation_stopped(data, 1);
+	kill_all_philos(data);
+	sem_post(data->sem_death);
+	return (NULL);
+}
+
 int	main(int argc, char *argv[])
 {
-	t_data	data;
-	int		i;
+	t_data		data;
+	int			i;
 	pthread_t	monitor_death;
 	pthread_t	monitor_full;
 

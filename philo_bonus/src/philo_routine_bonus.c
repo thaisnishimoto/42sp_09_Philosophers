@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:53:08 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/13 12:13:17 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/13 13:34:14 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ static void	init_philo(t_philo *philo, t_data *data, int i)
 static void	*self_monitor(void *arg)
 {
 	t_philo	*philo;
-	int	current_timestamp;
-	int	time_hungry;
+	int		current_timestamp;
+	int		time_hungry;
 
 	philo = (t_philo *)arg;
 	while (true)
@@ -46,7 +46,7 @@ static void	*self_monitor(void *arg)
 		sem_wait(philo->sem_state);
 		current_timestamp = calc_elapsed_ms(philo->data->start_time);
 		time_hungry = current_timestamp - philo->time_last_ate;
- 		if (time_hungry > philo->data->time_to_die)
+		if (time_hungry > philo->data->time_to_die)
 		{
 			sem_wait(philo->data->sem_print);
 			printf("%d %d died\n", current_timestamp, philo->id);
