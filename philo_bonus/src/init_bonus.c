@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 12:32:35 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/12 00:02:13 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/13 02:15:37 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,14 @@ static	bool	open_shared_semaphores(t_data *data)
 		return (false);
 	}
 	data->sem_death = sem_open("/dead", O_CREAT, 0660, 0);
+	if (data->sem_death == SEM_FAILED)
+	{
+		sem_close(data->sem_fork);
+		sem_close(data->sem_table);
+		sem_close(data->sem_print);
+		return (false);
+	}
+	data->sem_stop_sim = sem_open("/sim", O_CREAT, 0660, 0);
 	if (data->sem_death == SEM_FAILED)
 	{
 		sem_close(data->sem_fork);

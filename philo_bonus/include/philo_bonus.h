@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:52:07 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/12 21:09:48 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/13 01:57:27 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_data
 	sem_t	*sem_table;
 	sem_t	*sem_print;
 	sem_t	*sem_death;
+	sem_t	*sem_stop_sim;
 	int				start_time;
 }	t_data;
 

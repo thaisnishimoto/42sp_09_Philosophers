@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:53:08 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/12 22:56:22 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/13 02:14:40 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,11 @@ int	philo_routine(t_data *data, int i)
 	while (true)
 	{
 		eating(&philo);
-		if (data->times_must_eat > 0 && philo.full)
-			break ;
+//		if (data->times_must_eat > 0 && philo.full)
+//			break ;
 		sleeping(&philo);
 		thinking(&philo);
 	}
-	finish_child(&philo);
-	exit(SUCCESS);
+//	finish_child(&philo);
+//	exit(SUCCESS);
 }
