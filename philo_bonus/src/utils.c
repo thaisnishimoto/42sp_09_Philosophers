@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 23:39:08 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/12 00:04:28 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/13 00:33:40 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ char	*ft_utoa(unsigned int n)
 	if (ptr == NULL)
 		return (NULL);
 	ptr[len--] = '\0';
+	lnb = n;
 	if (lnb == 0)
 		ptr[len] = '0';
 	while (lnb > 0)
@@ -109,4 +110,3 @@ pid_t	ft_fork(t_data *data)
 	}
 	return (pid);
 }
-
