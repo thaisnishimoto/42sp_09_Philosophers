@@ -31,19 +31,37 @@ Content
 About the Project - Dining Philosophers Problem
 </h2>
 
-The Dining Philosophers Problem is a classic synchronization problem in computer science and concurrent programming. It illustrates the challenges of resource allocation and the prevention of deadlock in a multi-threaded or multi-process environment. <br>
+The Dining Philosophers Problem is a classic synchronization problem in computer science and concurrent programming. It illustrates the challenges of a multi-threaded or multi-process environment. <br>
 
-A group of philosophers sit around a circular table, each philosopher is either eating, sleeping, or thinking. Between each philosopher, there is a single fork. To eat, a philosopher needs both forks adjacent to them. However, only one philosopher can hold a fork at a time. <br>
+The problem showcases a scenario where a group of philosophers sit around a circular table, and the philosophers alternatively eat, think, or sleep. There are as many forks on the table as philosophers. To eat, a philosopher needs two forks. However, forks are shared among them, and only one philosopher can hold a fork at a time. <br>
 
-The challenge is to design a solution that prevents deadlock (where each philosopher is holding one fork and waiting for the other, thus none can proceed) and starvation (where a philosopher is perpetually denied access to the forks). <br>
+When a philosopher has finished eating, they put their forks back on the table and start sleeping. Once awake, they start thinking again. The simulation stops when a philosopher dies of starvation, or when they have all finished eating a given number of times.
+
+The challenge is to design a solution that prevents deadlock (where each philosopher is holding one fork and waiting for the other, thus none can proceed), data racing (access to a shared resource without protection, leading to unpredictable behavior), and starvation (where a philosopher is perpetually denied access to the forks). <br>
+
+The program will display a log of every state change of a philosopher, formatted as follows:
+```
+[timestamp_in_ms] [ID] has taken a fork
+[timestamp_in_ms] [ID] is eating
+[timestamp_in_ms] [ID] is sleeping
+[timestamp_in_ms] [ID] is thinking
+[timestamp_in_ms] [ID] died
+```
 
 <h2>
 Mandatory Part - Philosophers with threads and mutexes
 </h2>
+In the mandatory part, there is one fork between each pair of philosophers and a philosopher needs both forks adjacent to them to start eating. Each philosopher should be a thread and each fork should be protected by a mutex.
+
+### Important concepts:
+* **Threads** represent individual execution units within a process. They allow programs to perform multiple tasks concurrently, with each thread executing independently, but sharing the same memory space and resources of the parent process. Threads enable parallelism and multitasking within a program, facilitating tasks such as responsive user interfaces, parallel processing, and asynchronous operations.
+* **Concurrency vs. parallelism** While concurrency is about structuring programs to handle multiple tasks efficiently in overlapping time periods, by switching between threads (_dealing_ with lots of things at once), parallelism is about executing tasks simultaneously to achieve faster execution times, by leveraging multiple processing units (_doing_ with lots of things at once).
+* **Mutex**, short for mutual exclusion, is used in concurrent programming to prevent multiple threads from simultaneously accessing shared resources such as variables or data structures. It ensures that only one thread can access a critical section of code at any given time, preventing race conditions and maintaining data integrity.
 
 <h2>
 Bonus Part - Philosophers with processes and semaphores
 </h2>
+In the bonus part, the program behaves the same way. However, the implementation is modified: each philosopher should be a process and all the forks are put in the middle of the table. The number of available forks is represented by a counting semaphore.
 
 <h2>
 Usage
