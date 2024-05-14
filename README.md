@@ -19,11 +19,13 @@
 Content
 </h2>
 
-[About the Project](https://github.com/thaisnishimoto/42sp_08_Minishell?tab=readme-ov-file#about-the-project)
+[About the Project](https://github.com/thaisnishimoto/42sp_09_Philosophers?tab=readme-ov-file#about-the-project---dining-philosophers-problem)
 
-[Functionality](https://github.com/thaisnishimoto/42sp_08_Minishell?tab=readme-ov-file#functionality)
+[Mandatory Part](https://github.com/thaisnishimoto/42sp_09_Philosophers?tab=readme-ov-file#mandatory-part---philosophers-with-threads-and-mutexes)
 
-[Usage](https://github.com/thaisnishimoto/42sp_08_Minishell?tab=readme-ov-file#usage)
+[Bonus Part](https://github.com/thaisnishimoto/42sp_09_Philosophers?tab=readme-ov-file#bonus-part---philosophers-with-processes-and-semaphores)
+
+[Usage](https://github.com/thaisnishimoto/42sp_09_Philosophers?tab=readme-ov-file#usage)
 
 <h2>
 About the Project - Dining Philosophers Problem
