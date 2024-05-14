@@ -26,7 +26,21 @@ Content
 [Usage](https://github.com/thaisnishimoto/42sp_08_Minishell?tab=readme-ov-file#usage)
 
 <h2>
-About the Project
+About the Project - Dining Philosophers Problem
+</h2>
+
+The Dining Philosophers Problem is a classic synchronization problem in computer science and concurrent programming. It illustrates the challenges of resource allocation and the prevention of deadlock in a multi-threaded or multi-process environment. <br>
+
+A group of philosophers sit around a circular table, each philosopher is either eating, sleeping, or thinking. Between each philosopher, there is a single fork. To eat, a philosopher needs both forks adjacent to them. However, only one philosopher can hold a fork at a time. <br>
+
+The challenge is to design a solution that prevents deadlock (where each philosopher is holding one fork and waiting for the other, thus none can proceed) and starvation (where a philosopher is perpetually denied access to the forks). <br>
+
+<h2>
+Mandatory Part - Philosophers with threads and mutexes
+</h2>
+
+<h2>
+Bonus Part - Philosophers with processes and semaphores
 </h2>
 
 <h2>
