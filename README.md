@@ -63,6 +63,13 @@ Bonus Part - Philosophers with processes and semaphores
 </h2>
 In the bonus part, the program behaves the same way. However, the implementation is modified: each philosopher should be a process and all the forks are put in the middle of the table. The number of available forks is represented by a counting semaphore.
 
+### Important concepts:
+* **Processes** are isolated, meaning they cannot directly access each other's memory space or resources without explicit inter-process communication mechanisms (e.g. semaphores).
+* **Semaphores** are used in concurrent programming to control access to shared resources by multiple threads or processes. It is a non-negative integer variable that acts as a counter with associated atomic operations - wait (to increment or wait) and post (to decrement).
+	* **Binary semaphores** have only two states: 0 and 1. They are typically used to enforce mutual exclusion, allowing processes or threads to acquire and release exclusive access to a resource.
+ 	* **Counting semaphores** have an integer value greater than or equal to zero. They are useful for managing multiple instances of a resource or for implementing resource pools where a limited number of resources are available.
+	* **Named semaphores** have a unique name in the file system, similar to a file name. This allows unrelated processes to access the same semaphore by its name. They persist beyond the lifetime of the process that created them and can be used for synchronization and communication between unrelated processes running on the same system.
+
 <h2>
 Usage
 </h2>
