@@ -6,7 +6,7 @@
 /*   By: tmina-ni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:53:08 by tmina-ni          #+#    #+#             */
-/*   Updated: 2024/05/07 00:12:57 by tmina-ni         ###   ########.fr       */
+/*   Updated: 2024/05/24 20:15:40 by tmina-ni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,8 @@ static int	time_hungry(t_philo *philo)
 	int	current_timestamp;
 	int	time_hungry;
 
-	pthread_mutex_lock(&philo->data->time_ate_mtx);
 	current_timestamp = calc_elapsed_ms(philo->data->start_time);
 	time_hungry = current_timestamp - philo->time_last_ate;
-	pthread_mutex_unlock(&philo->data->time_ate_mtx);
 	return (time_hungry);
 }
 
@@ -33,12 +31,15 @@ bool	philo_starved(t_philo *philo)
 	i = 0;
 	while (i < philo->data->num_philos && !stop_simulation(philo, 0))
 	{
+		pthread_mutex_lock(&philo->data->time_ate_mtx);
 		if (time_hungry(&philo[i]) > philo->data->time_to_die)
 		{
 			print_action(&philo[i], DIE);
 			starved_state = true;
-			break ;
 		}
+		pthread_mutex_unlock(&philo->data->time_ate_mtx);
+		if (starved_state)
+			break ;
 		i++;
 	}
 	return (starved_state);
